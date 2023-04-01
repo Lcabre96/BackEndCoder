@@ -22,11 +22,14 @@ class CartManager {
 
 		const cartFound = carts.find((cart) => cart.id === cid);
 
-		if (!cartFound) return console.error("Cart not found");
+		if (!cartFound) {
+			console.error("Cart not found");
+			return null;
+		}
 
-		console.table(cartFound);
+		// console.table(cartFound);
 
-		return cartFound;
+		return cartFound.products;
 	};
 
 	addProductToCart = async (cid, pid) => {
@@ -54,14 +57,19 @@ class CartManager {
 		} catch (error) {}
 	};
 
-	addCart = async (newCart) => {
+	addCart = async () => {
 		const carts = await this.getCarts();
+
+		const newCart = {
+			id: 1,
+			products: [],
+		};
 
 		carts.length === 0
 			? (newCart.id = 1)
 			: (newCart.id = carts[carts.length - 1].id + 1);
 
-		carts.push({ id: newCart.id, ...newCart });
+		carts.push(newCart);
 
 		await fs.promises.writeFile(
 			this.path,
@@ -69,45 +77,7 @@ class CartManager {
 			"utf-8"
 		);
 
-		return carts;
-	};
-
-	updateCart = async (cartToUpdate) => {
-		const { id } = cartToUpdate;
-		const carts = await this.getCarts();
-
-		const cartFoundIndex = carts.findIndex((cart) => cart.id === id);
-		if (cartFoundIndex === -1) return console.error("Cart not found");
-
-		carts[cartFoundIndex] = {
-			...carts[cartFoundIndex],
-			...cartToUpdate,
-		};
-		console.log("El carrito actualizado es:", carts[cartFoundIndex]);
-
-		await fs.promises.writeFile(
-			this.path,
-			JSON.stringify(carts, null, 2),
-			"utf-8"
-		);
-	};
-
-	deleteCart = async (IdCartToDelete) => {
-		const carts = await this.getCarts();
-
-		const cartFoundIndex = carts.findIndex(
-			(cart) => cart.id === IdCartToDelete
-		);
-
-		if (cartFoundIndex === -1) return console.error("Cart not found");
-		console.log("El carrito a eliminar es:", carts[cartFoundIndex]);
-		carts.splice(cartFoundIndex, 1);
-
-		await fs.promises.writeFile(
-			this.path,
-			JSON.stringify(carts, null, 2),
-			"utf-8"
-		);
+		return newCart;
 	};
 }
 

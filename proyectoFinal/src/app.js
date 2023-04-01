@@ -3,7 +3,7 @@ const productsRouter = require("./routes/products.router.js");
 const cartsRouter = require("./routes/carts.router.js");
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 // handlebars config _______________________________________________________
 const handlebars = require("express-handlebars");
@@ -21,6 +21,15 @@ app.use("/static", express.static(__dirname + "/public"));
 
 app.use("/api/products/", productsRouter);
 app.use("/api/carts/", cartsRouter);
+
+app.get("/", (req, res) => {
+	let testUser = {
+		name: "Martín",
+		last_name: "Fernandez",
+		style: "index.css",
+	};
+	res.render("index", testUser);
+});
 
 app.listen(PORT, (err) => {
 	if (err) {
