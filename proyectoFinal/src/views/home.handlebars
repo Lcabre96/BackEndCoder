@@ -1,0 +1,33 @@
+<h1>Links</h1>
+<p><a href="/">Link a root</a></p>
+
+<div id="divProdTable" class="table-responsive align-self-center w-75">
+	<table
+		id="productTable"
+		class="table table-sm table-primary table-striped align-self-center text-center"
+	>
+		<thead class="table-dark">
+			<tr>
+				<th scope="col">Producto</th>
+				<th scope="col">Imagen</th>
+				<th scope="col">Precio</th>
+				<th scope="col">Categoría</th>
+				<th scope="col">Stock</th>
+			</tr>
+		</thead>
+		<tbody class="productList">
+			{{#each productList}}
+				<tr>
+					<th scope="row">{{title}}</th>
+					<td><img
+							src="{{correctThumbnails thumbnails}}"
+							alt="product image"
+						/></td>
+					<td>{{price}}</td>
+					<td>{{category}}</td>
+					<td>{{stock}}</td>
+				</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</div>
